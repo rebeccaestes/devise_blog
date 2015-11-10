@@ -1,8 +1,13 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, except [:index, :show]
 
   def index
-    @posts = current_user.posts
+    if current_user
+      @posts = current_user.posts
+    else
+      @posts = Post.all
+    end
   end
 
   def show
